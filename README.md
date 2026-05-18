@@ -10,6 +10,7 @@ Deskripsi singkat tentang project ini.
 - [Panduan Clone & Setup](#clone)
 - [Setup Database](#setup-database)
 - [Menjalankan Project](#menjalankan-project)
+- [Struktur MVC](#run)
 
 ---
 
@@ -157,7 +158,7 @@ php artisan migrate
 php artisan migrate --seed
 ```
 
-## ▶️ Menjalankan Project
+<h2 id="run">▶️ Menjalankan Project</h2>
 
 ```bash
 php artisan serve
@@ -167,7 +168,7 @@ Akses project di browser: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-## 📁 Struktur MVC
+<h2 id="structure">📁 Struktur MVC</h2>
 
 ```
 app/
