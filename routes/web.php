@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PenghuniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 
@@ -17,6 +18,14 @@ Route::middleware(['auth', 'cek.peran:pramurukti'])->group(function () {
 
 Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
     Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
+    Route::resource('admin/penghuni', PenghuniController::class)
+        ->only(['index', 'store', 'update', 'destroy'])
+        ->names([
+            'index' => 'admin.penghuni.index',
+            'store' => 'admin.penghuni.store',
+            'update' => 'admin.penghuni.update',
+            'destroy' => 'admin.penghuni.destroy',
+        ]);
 });
 
 Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {
