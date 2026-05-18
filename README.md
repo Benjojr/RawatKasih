@@ -79,7 +79,7 @@ Ikuti langkah-langkah berikut setelah melakukan clone repository.
 
 ```bash
 git clone https://github.com/Benjojr/RawatKasih.git
-cd nama-repo
+cd RawatKasih
 ```
 
 ### 2. Install Dependency PHP
