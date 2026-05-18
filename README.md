@@ -6,10 +6,9 @@ Deskripsi singkat tentang project ini.
 ## 📋 Daftar Isi
 
 - [Teknologi](#teknologi)
-- [Push Project ke GitHub](#push)
-- [Panduan Clone & Setup](#clone)
+- [Clone & Setup](#clone)
 - [Setup Database](#setup-database)
-- [Menjalankan Project](#run)
+- [Run Project](#run)
 - [Struktur MVC](#structure)
 
 ---
@@ -21,54 +20,6 @@ Deskripsi singkat tentang project ini.
 - MySQL
 - Composer
 - Node.js & NPM
-
----
-
-<h2 id="push">📤 Push Project ke GitHub</h2>
-
-Langkah-langkah untuk pertama kali push project Laravel ke GitHub.
-
-### 1. Pastikan `.gitignore` sudah benar
-
-Laravel sudah menyertakan `.gitignore` secara default. Pastikan file-file berikut **tidak** ikut di-push:
-
-```
-/vendor
-/node_modules
-.env
-/storage/*.key
-```
-
-### 2. Inisialisasi Git dan push ke GitHub
-
-```bash
-# Masuk ke folder project
-cd RawatKasih
-
-# Inisialisasi git (jika belum)
-git init
-
-# Tambahkan semua file
-git add .
-
-# Commit pertama
-git commit -m "Initial commit"
-
-# Hubungkan ke repository GitHub (ganti URL sesuai repo kamu)
-git remote add origin https://github.com/Benjojr/RawatKasih.git
-
-# Push ke branch main
-git branch -M main
-git push -u origin main
-```
-
-### 3. Push update berikutnya
-
-```bash
-git add .
-git commit -m "Pesan commit"
-git push
-```
 
 ---
 
