@@ -6,14 +6,14 @@ Deskripsi singkat tentang project ini.
 ## 📋 Daftar Isi
 
 - [Teknologi](#teknologi)
-- [Push Project ke GitHub](#push-project-ke-github)
-- [Panduan Clone & Setup](#panduan-clone--setup)
+- [Push Project ke GitHub](#push)
+- [Panduan Clone & Setup](#clone)
 - [Setup Database](#setup-database)
 - [Menjalankan Project](#menjalankan-project)
 
 ---
 
-## 🛠 Teknologi
+<h2 id="teknologi">🛠 Teknologi</h2>
 
 - PHP >= 8.5.4
 - Laravel >= 13.x
@@ -23,7 +23,7 @@ Deskripsi singkat tentang project ini.
 
 ---
 
-## 📤 Push Project ke GitHub
+<h2 id="push">📤 Push Project ke GitHub</h2>
 
 Langkah-langkah untuk pertama kali push project Laravel ke GitHub.
 
@@ -54,7 +54,7 @@ git add .
 git commit -m "Initial commit"
 
 # Hubungkan ke repository GitHub (ganti URL sesuai repo kamu)
-git remote add origin https://github.com/username/nama-repo.git
+git remote add origin https://github.com/Benjojr/RawatKasih.git
 
 # Push ke branch main
 git branch -M main
@@ -71,14 +71,14 @@ git push
 
 ---
 
-## 📥 Panduan Clone & Setup
+<h2 id="clone">📥 Panduan Clone & Setup</h2>
 
 Ikuti langkah-langkah berikut setelah melakukan clone repository.
 
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/username/nama-repo.git
+git clone https://github.com/Benjojr/RawatKasih.git
 cd nama-repo
 ```
 
@@ -122,7 +122,7 @@ php artisan key:generate
 
 ---
 
-## 🗄️ Setup Database
+<h2 id="setup-database">🗄️ Setup Database</h2>
 
 ### 1. Buat Database Baru
 
@@ -157,14 +157,6 @@ php artisan migrate
 php artisan migrate --seed
 ```
 
-### 4. *(Opsional)* Jalankan Seeder Terpisah
-
-```bash
-php artisan db:seed
-```
-
----
-
 ## ▶️ Menjalankan Project
 
 ```bash
@@ -172,26 +164,6 @@ php artisan serve
 ```
 
 Akses project di browser: [http://localhost:8000](http://localhost:8000)
-
----
-
-## ⚙️ Perintah Artisan Berguna
-
-```bash
-# Bersihkan cache
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-
-# Lihat semua route
-php artisan route:list
-
-# Buat file baru
-php artisan make:model NamaModel -mcr   # Model + Migration + Controller
-php artisan make:controller NamaController
-php artisan make:migration nama_migration
-```
 
 ---
 
