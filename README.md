@@ -42,7 +42,7 @@ Laravel sudah menyertakan `.gitignore` secara default. Pastikan file-file beriku
 
 ```bash
 # Masuk ke folder project
-cd nama-project
+cd RawatKasih
 
 # Inisialisasi git (jika belum)
 git init
