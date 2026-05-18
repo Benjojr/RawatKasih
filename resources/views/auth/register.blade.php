@@ -20,30 +20,25 @@
                 <label class="block text-sm text-gray-600 mb-2">Daftar sebagai</label>
 
                 <div class="flex gap-2">
-                    @foreach(['pramurukti' => 'Pramurukti', 'keluarga' => 'Keluarga', 'admin' => 'Admin'] as $value => $label)
+                    @foreach (['pramurukti' => 'Pramurukti', 'keluarga' => 'Keluarga', 'admin' => 'Admin'] as $value => $label)
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="peran" value="{{ $value }}" class="peer hidden"
+                                {{ old('peran') === $value ? 'checked' : '' }}>
 
-                    <label class="flex-1 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="peran"
-                            value="{{ $value }}"
-                            class="peer hidden"
-                            {{ old('peran') === $value ? 'checked' : '' }}>
-
-                        <div class="text-center border border-gray-300 rounded-lg py-2 text-sm
+                            <div
+                                class="text-center border border-gray-300 rounded-lg py-2 text-sm
                     text-gray-600 transition
                     peer-checked:bg-green-500
                     peer-checked:text-white
                     peer-checked:border-green-500">
-                            {{ $label }}
-                        </div>
-                    </label>
-
+                                {{ $label }}
+                            </div>
+                        </label>
                     @endforeach
                 </div>
 
                 @error('peran')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -52,7 +47,7 @@
                 <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
                     class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
                 @error('nama_lengkap')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -61,7 +56,7 @@
                 <input type="email" name="email" value="{{ old('email') }}"
                     class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
                 @error('email')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -70,7 +65,7 @@
                 <input type="password" name="password"
                     class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
                 @error('password')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
