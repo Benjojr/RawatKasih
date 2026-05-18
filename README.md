@@ -9,8 +9,8 @@ Deskripsi singkat tentang project ini.
 - [Push Project ke GitHub](#push)
 - [Panduan Clone & Setup](#clone)
 - [Setup Database](#setup-database)
-- [Menjalankan Project](#menjalankan-project)
-- [Struktur MVC](#run)
+- [Menjalankan Project](#run)
+- [Struktur MVC](#structure)
 
 ---
 
