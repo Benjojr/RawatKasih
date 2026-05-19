@@ -90,6 +90,7 @@ DB_PASSWORD=
 ```bash
 # Hanya migration
 php artisan migrate
+```
 
 <h2 id="run">▶️ Menjalankan Project</h2>
 
