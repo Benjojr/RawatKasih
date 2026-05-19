@@ -5,9 +5,10 @@ use App\Http\Controllers\Admin\PenghuniController;
 use App\Http\Controllers\Admin\PramuruktiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Pramurukti\TugasHarianController;
 use App\Http\Controllers\Pramurukti\PasienController;
+use App\Http\Controllers\Pramurukti\TugasHarianController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\Admin\TugasController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -64,6 +65,14 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
             'index' => 'admin.pramurukti.index',
             'store' => 'admin.pramurukti.store',
             'destroy' => 'admin.pramurukti.destroy',
+        ]);
+    Route::resource('admin/tugas', TugasController::class)
+        ->only(['index', 'store', 'update', 'destroy'])
+        ->names([
+            'index' => 'admin.tugas.index',
+            'store' => 'admin.tugas.store',
+            'update' => 'admin.tugas.update',
+            'destroy' => 'admin.tugas.destroy',
         ]);
 });
 
