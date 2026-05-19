@@ -79,11 +79,12 @@
 
     {{-- Aksi Cepat --}}
     <div class="grid grid-cols-2 gap-4">
-        <button class="bg-green-500 hover:bg-green-600 text-white rounded-2xl p-5 text-left transition">
+        <a href="{{ route('admin.shift.index') }}"
+            class="bg-green-500 hover:bg-green-600 text-white rounded-2xl p-5 text-left transition block">
             <div class="text-2xl mb-2">📅</div>
             <p class="font-semibold text-sm">Atur Jadwal Shift</p>
             <p class="text-xs text-green-100 mt-1">Kelola shift pramurukti</p>
-        </button>
+        </a>
         <button class="bg-purple-500 hover:bg-purple-600 text-white rounded-2xl p-5 text-left transition">
             <div class="text-2xl mb-2">📢</div>
             <p class="font-semibold text-sm">Kirim Pengumuman</p>
