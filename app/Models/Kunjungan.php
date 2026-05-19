@@ -17,4 +17,14 @@ class Kunjungan extends Model
         'jam_kunjungan', 'tanggal_kunjungan',
         'status_kunjungan', 'catatan',
     ];
+
+    public function penghuni()
+    {
+        return $this->belongsTo(Penghuni::class, 'id_penghuni', 'id_penghuni');
+    }
+
+    public function keluarga()
+    {
+        return $this->belongsTo(Keluarga::class, 'id_keluarga', 'id_keluarga');
+    }
 }
