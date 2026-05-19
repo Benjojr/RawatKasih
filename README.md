@@ -23,7 +23,7 @@ Deskripsi singkat tentang project ini.
 
 ---
 
-<h2 id="clone">📥 Panduan Clone & Setup</h2>
+<h2 id="clone">Clone & Setup</h2>
 
 Ikuti langkah-langkah berikut setelah melakukan clone repository.
 
@@ -41,20 +41,6 @@ composer install
 ```
 
 ### 3. Install Dependency Node
-
-> ⚠️ **Pengguna WSL (Windows Subsystem for Linux):** Pastikan `node` dan `npm` terpasang di dalam WSL, **bukan** dari Windows. Cek dengan perintah berikut:
-> ```bash
-> which node  # harus: /home/username/.nvm/...
-> which npm   # harus: /home/username/.nvm/...
-> ```
-> Jika salah satunya mengarah ke `/mnt/c/...`, install Node.js via nvm di WSL terlebih dahulu:
-> ```bash
-> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-> # Tutup dan buka terminal baru, lalu:
-> nvm install --lts
-> nvm use --lts
-> ```
-
 ```bash
 npm install
 npm run build
@@ -104,10 +90,6 @@ DB_PASSWORD=
 ```bash
 # Hanya migration
 php artisan migrate
-
-# Migration + Seeder (jika ada data awal)
-php artisan migrate --seed
-```
 
 <h2 id="run">▶️ Menjalankan Project</h2>
 
