@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PenghuniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\PramuruktiController;
+use App\Http\Controllers\Pramurukti\TugasHarianController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -16,6 +17,17 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Dashboard
 Route::middleware(['auth', 'cek.peran:pramurukti'])->group(function () {
     Route::get('/dashboard/pramurukti', [DashboardController::class, 'pramurukti'])->name('dashboard.pramurukti');
+
+    Route::resource('pramurukti/tugas', TugasHarianController::class)
+        ->only(['index', 'store', 'destroy'])
+        ->names([
+            'index'   => 'pramurukti.tugas.index',
+            'store'   => 'pramurukti.tugas.store',
+            'destroy' => 'pramurukti.tugas.destroy',
+        ]);
+
+    Route::patch('pramurukti/tugas/{tugasHarian}/status', [TugasHarianController::class, 'updateStatus'])
+        ->name('pramurukti.tugas.updateStatus');
 });
 
 Route::middleware(['auth', 'cek.peran:admin'])->group(function () {

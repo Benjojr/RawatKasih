@@ -3,63 +3,66 @@
 namespace App\Http\Controllers\Pramurukti;
 
 use App\Http\Controllers\Controller;
+use App\Models\TugasHarian;
+use App\Models\Tugas;
+use App\Models\Penghuni;
 use Illuminate\Http\Request;
 
 class TugasHarianController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $tugasHarian = TugasHarian::with(['penghuni', 'tugas'])
+            ->whereDate('waktu_pelaksanaan', today())
+            ->orderBy('waktu_pelaksanaan')
+            ->get();
+
+        $penghuni = Penghuni::all();
+        $tugas    = Tugas::all();
+
+        return view('pramurukti.tugas.index', compact('tugasHarian', 'penghuni', 'tugas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_penghuni'       => 'required|exists:penghuni,id_penghuni',
+            'id_tugas'          => 'required|exists:tugas,id_tugas',
+            'waktu_pelaksanaan' => 'required',
+            'catatan'           => 'nullable|string|max:300',
+            'mood'              => 'required|in:baik,biasa,kurang baik,buruk',
+        ]);
+
+        TugasHarian::create([
+            'id_penghuni'       => $request->id_penghuni,
+            'id_tugas'          => $request->id_tugas,
+            'waktu_pelaksanaan' => $request->waktu_pelaksanaan,
+            'catatan'           => $request->catatan,
+            'mood'              => $request->mood,
+            'status_tugas'      => 'mendatang',
+        ]);
+
+        return redirect()->route('pramurukti.tugas.index')
+            ->with('success', 'Tugas berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function updateStatus(Request $request, TugasHarian $tugasHarian)
     {
-        //
+        $request->validate([
+            'status_tugas' => 'required|in:mendatang,in progress,tuntas',
+        ]);
+
+        $tugasHarian->update(['status_tugas' => $request->status_tugas]);
+
+        return redirect()->route('pramurukti.tugas.index')
+            ->with('success', 'Status tugas diperbarui.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(TugasHarian $tugasHarian)
     {
-        //
-    }
+        $tugasHarian->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('pramurukti.tugas.index')
+            ->with('success', 'Tugas berhasil dihapus.');
     }
 }

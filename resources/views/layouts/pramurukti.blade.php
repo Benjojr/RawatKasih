@@ -46,8 +46,9 @@
                     </svg>
                     Pasien
                 </a>
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100">
+                <a href="{{ route('pramurukti.tugas.index') }}"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium
+                    {{ request()->routeIs('pramurukti.tugas.*') ? 'bg-green-50 text-green-600' : 'text-gray-500 hover:bg-gray-100' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
