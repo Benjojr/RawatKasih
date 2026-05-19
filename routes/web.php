@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\KamarController;
 use App\Http\Controllers\Admin\PenghuniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\KamarController;
+use App\Http\Controllers\Admin\PramuruktiController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -34,6 +35,13 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
             'store' => 'admin.kamar.store',
             'update' => 'admin.kamar.update',
             'destroy' => 'admin.kamar.destroy',
+        ]);
+    Route::resource('admin/pramurukti', PramuruktiController::class)
+        ->only(['index', 'store', 'destroy'])
+        ->names([
+            'index' => 'admin.pramurukti.index',
+            'store' => 'admin.pramurukti.store',
+            'destroy' => 'admin.pramurukti.destroy',
         ]);
 });
 

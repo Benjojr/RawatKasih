@@ -54,6 +54,15 @@
                     </svg>
                     Kamar
                 </a>
+                <a href="{{ route('admin.pramurukti.index') }}"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium
+                    {{ request()->routeIs('admin.pramurukti.*') ? 'bg-green-50 text-green-600' : 'text-gray-500 hover:bg-gray-100' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Pramurukti
+                </a>
                 <a href="#"
                     class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
