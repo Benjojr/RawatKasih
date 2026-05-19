@@ -22,4 +22,9 @@ class Penghuni extends Model
     {
         return $this->belongsTo(Kamar::class, 'id_kamar', 'id_kamar');
     }
+
+    public function tugasHarian()
+    {
+        return $this->hasMany(TugasHarian::class, 'id_penghuni', 'id_penghuni');
+    }
 }

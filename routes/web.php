@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Admin\KamarController;
 use App\Http\Controllers\Admin\PenghuniController;
+use App\Http\Controllers\Admin\PramuruktiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\PramuruktiController;
 use App\Http\Controllers\Pramurukti\TugasHarianController;
+use App\Http\Controllers\Pramurukti\PasienController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -21,13 +22,16 @@ Route::middleware(['auth', 'cek.peran:pramurukti'])->group(function () {
     Route::resource('pramurukti/tugas', TugasHarianController::class)
         ->only(['index', 'store', 'destroy'])
         ->names([
-            'index'   => 'pramurukti.tugas.index',
-            'store'   => 'pramurukti.tugas.store',
+            'index' => 'pramurukti.tugas.index',
+            'store' => 'pramurukti.tugas.store',
             'destroy' => 'pramurukti.tugas.destroy',
         ]);
 
     Route::patch('pramurukti/tugas/{tugasHarian}/status', [TugasHarianController::class, 'updateStatus'])
         ->name('pramurukti.tugas.updateStatus');
+
+    Route::get('pramurukti/pasien', [PasienController::class, 'index'])->name('pramurukti.pasien.index');
+    Route::get('pramurukti/pasien/{penghuni}', [PasienController::class, 'show'])->name('pramurukti.pasien.show');
 });
 
 Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
