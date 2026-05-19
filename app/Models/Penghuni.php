@@ -27,4 +27,9 @@ class Penghuni extends Model
     {
         return $this->hasMany(TugasHarian::class, 'id_penghuni', 'id_penghuni');
     }
+
+    public function tandaVital()
+    {
+        return $this->hasMany(TandaVital::class, 'id_penghuni', 'id_penghuni');
+    }
 }

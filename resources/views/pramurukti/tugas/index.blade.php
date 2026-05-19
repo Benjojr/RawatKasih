@@ -100,11 +100,11 @@
                     </div>
                     <div>
                         <label class="text-xs text-gray-500">Jenis Tugas</label>
-                        <select name="id_tugas" required
-                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-green-400">
+                        <select name="id_tugas" id="selectTugas" required ...>
                             <option value="">Pilih tugas...</option>
                             @foreach ($tugas as $tg)
-                                <option value="{{ $tg->id_tugas }}">{{ $tg->judul_tugas }} ({{ $tg->tipe_tugas }})
+                                <option value="{{ $tg->id_tugas }}" data-vital="{{ $tg->butuh_vital ? '1' : '0' }}">
+                                    {{ $tg->judul_tugas }} ({{ $tg->tipe_tugas }})
                                 </option>
                             @endforeach
                         </select>
@@ -124,6 +124,31 @@
                             <option value="buruk">Buruk</option>
                         </select>
                     </div>
+                    <div id="sectionVital" class="hidden flex flex-col gap-3 p-3 bg-gray-50 rounded-lg">
+                        <p class="text-xs font-medium text-gray-500">Tanda Vital</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-gray-500">Tekanan Darah</label>
+                                <input type="text" name="tekanan_darah" placeholder="cth: 120/80"
+                                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-green-400">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Detak Jantung (bpm)</label>
+                                <input type="number" name="detak_jantung"
+                                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-green-400">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Gula Darah (mg/dL)</label>
+                                <input type="number" step="0.01" name="gula_darah"
+                                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-green-400">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Suhu (°C)</label>
+                                <input type="number" step="0.1" name="suhu"
+                                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-green-400">
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <label class="text-xs text-gray-500">Catatan</label>
                         <textarea name="catatan" rows="2"
@@ -140,4 +165,11 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById('selectTugas').addEventListener('change', function() {
+            const selected = this.options[this.selectedIndex];
+            const butuhVital = selected.dataset.vital === '1';
+            document.getElementById('sectionVital').classList.toggle('hidden', !butuhVital);
+        });
+    </script>
 @endsection

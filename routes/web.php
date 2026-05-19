@@ -10,6 +10,7 @@ use App\Http\Controllers\Pramurukti\TugasHarianController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\Keluarga\KunjunganController;
+use App\Http\Controllers\Keluarga\KesehatanController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -83,4 +84,5 @@ Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {
     Route::get('keluarga/kunjungan', [KunjunganController::class, 'index'])->name('keluarga.kunjungan.index');
     Route::post('keluarga/kunjungan', [KunjunganController::class, 'store'])->name('keluarga.kunjungan.store');
     Route::delete('keluarga/kunjungan/{kunjungan}', [KunjunganController::class, 'destroy'])->name('keluarga.kunjungan.destroy');
+    Route::get('keluarga/kesehatan', [KesehatanController::class, 'index'])->name('keluarga.kesehatan.index');
 });
