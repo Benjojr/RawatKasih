@@ -9,11 +9,11 @@ Deskripsi singkat tentang project ini.
 - [Clone & Setup](#clone)
 - [Setup Database](#setup-database)
 - [Run Project](#run)
-- [Struktur MVC](#structure)
+- [MVC Structure](#structure)
 
 ---
 
-<h2 id="teknologi">🛠 Teknologi</h2>
+<h2 id="teknologi">Technology</h2>
 
 - PHP >= 8.5.4
 - Laravel >= 13.x
@@ -60,7 +60,7 @@ php artisan key:generate
 
 ---
 
-<h2 id="setup-database">🗄️ Setup Database</h2>
+<h2 id="setup-database">Setup Database</h2>
 
 ### 1. Buat Database Baru
 
@@ -92,7 +92,7 @@ DB_PASSWORD=
 php artisan migrate
 ```
 
-<h2 id="run">▶️ Menjalankan Project</h2>
+<h2 id="run">Run Project</h2>
 
 ```bash
 php artisan serve
@@ -102,7 +102,7 @@ Akses project di browser: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-<h2 id="structure">📁 Struktur MVC</h2>
+<h2 id="structure">MVC Structure</h2>
 
 ```
 app/
