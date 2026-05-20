@@ -1,31 +1,75 @@
-# 🚀 RawatKasih 
-Deskripsi singkat tentang project ini.
+# 🏥 RawatKasih
+
+Aplikasi **Caregiver-Assistant** berbasis web untuk membantu pengelolaan panti wreda secara digital. Menghubungkan tiga pihak utama — **Pramurukti**, **Keluarga**, dan **Admin Panti** — dalam satu platform terintegrasi.
+
+> Juara 1 GEMASTIK 2025 — Tim InnoVate, Institut Teknologi Sepuluh Nopember
 
 ---
 
 ## 📋 Daftar Isi
 
-- [Teknologi](#teknologi)
-- [Clone & Setup](#clone)
-- [Setup Database](#setup-database)
-- [Run Project](#run)
-- [MVC Structure](#structure)
+- [Fitur](#-fitur)
+- [Teknologi](#-teknologi)
+- [Peran Pengguna](#-peran-pengguna)
+- [Panduan Clone & Setup](#-panduan-clone--setup)
+- [Setup Database](#-setup-database)
+- [Menjalankan Project](#-menjalankan-project)
+- [Struktur Project](#-struktur-project)
+- [Perintah Berguna](#-perintah-berguna)
 
 ---
 
-<h2 id="teknologi">Technology</h2>
+## ✨ Fitur
+
+### Admin
+- Dashboard ringkasan operasional panti
+- Manajemen penghuni, kamar, pramurukti, dan tugas
+- Atur jadwal shift pramurukti
+- Review & kelola pengajuan kunjungan keluarga
+- Chat dengan semua pengguna
+
+### Pramurukti
+- Dashboard tugas harian + countdown shift
+- Input monitoring harian (tanda vital, mood, catatan)
+- Daftar & profil detail pasien
+- Chat dengan keluarga dan admin
+
+### Keluarga
+- Dashboard status lansia secara real-time
+- Grafik tren kesehatan (gula darah, detak jantung, suhu)
+- Ajukan & kelola jadwal kunjungan
+- Chat dengan pramurukti dan admin
+
+### Semua Peran
+- Notifikasi otomatis saat ada kejadian penting
+- Pengaturan profil & ubah password
+
+---
+
+## 🛠 Teknologi
 
 - PHP >= 8.5.4
 - Laravel >= 13.x
 - MySQL
+- Tailwind CSS v4
+- Vite 8
+- Chart.js
 - Composer
-- Node.js & NPM
+- Node.js & NPM (via nvm)
 
 ---
 
-<h2 id="clone">Clone & Setup</h2>
+## 👥 Peran Pengguna
 
-Ikuti langkah-langkah berikut setelah melakukan clone repository.
+| Peran | Akses |
+|---|---|
+| `admin` | Kelola semua data operasional panti |
+| `pramurukti` | Input tugas harian & monitoring pasien |
+| `keluarga` | Pantau kondisi lansia & ajukan kunjungan |
+
+---
+
+## 📥 Panduan Clone & Setup
 
 ### 1. Clone Repository
 
@@ -60,21 +104,17 @@ php artisan key:generate
 
 ---
 
-<h2 id="setup-database">Setup Database</h2>
+## 🗄️ Setup Database
 
 ### 1. Buat Database Baru
-
-Buat database baru di MySQL:
 
 ```sql
 CREATE DATABASE rawatkasih;
 ```
 
-Atau melalui phpMyAdmin / DBeaver / tools lainnya.
-
 ### 2. Konfigurasi `.env`
 
-Buka file `.env` dan sesuaikan konfigurasi database:
+Buka file `.env` dan sesuaikan:
 
 ```env
 DB_CONNECTION=mysql
@@ -88,34 +128,92 @@ DB_PASSWORD=
 ### 3. Jalankan Migration
 
 ```bash
-# Hanya migration
 php artisan migrate
 ```
 
-<h2 id="run">Run Project</h2>
+---
+
+## ▶️ Menjalankan Project
+
+Jalankan dua perintah berikut di terminal terpisah:
 
 ```bash
+# Terminal 1 — Backend
 php artisan serve
+
+# Terminal 2 — Frontend (development)
+npm run dev
 ```
 
-Akses project di browser: [http://localhost:8000](http://localhost:8000)
+Akses di browser: [http://localhost:8000](http://localhost:8000)
+
+### Akun Pertama
+
+Daftar akun baru melalui halaman `/register`. Pilih peran saat registrasi:
+- **Admin** — untuk mengelola operasional panti
+- **Pramurukti** — untuk input tugas harian
+- **Keluarga** — untuk memantau kondisi lansia
+
+> Setelah daftar sebagai **Pramurukti**, admin perlu mendaftarkannya di menu **Pramurukti** agar muncul di sistem.
 
 ---
 
-<h2 id="structure">MVC Structure</h2>
+## 📁 Struktur Project
 
 ```
 app/
+├── Helpers/
+│   └── NotifikasiHelper.php      # Helper kirim notifikasi
 ├── Http/
-│   └── Controllers/   # Controller
-├── Models/            # Model
+│   ├── Controllers/
+│   │   ├── Admin/                # Controller khusus admin
+│   │   ├── Keluarga/             # Controller khusus keluarga
+│   │   ├── Pramurukti/           # Controller khusus pramurukti
+│   │   ├── AuthController.php
+│   │   ├── ChatController.php
+│   │   ├── DashboardController.php
+│   │   ├── NotifikasiController.php
+│   │   └── ProfilController.php
+│   └── Middleware/
+│       └── CekPeran.php          # Middleware role-based access
+├── Models/                       # Eloquent models
 resources/
-└── views/             # View (Blade Templates)
+├── css/
+│   └── app.css                   # Tailwind CSS
+├── js/
+│   └── app.js
+└── views/
+    ├── admin/                    # View halaman admin
+    ├── auth/                     # Login & register
+    ├── chat/                     # Halaman chat
+    ├── dashboard/                # Dashboard per peran
+    ├── keluarga/                 # View halaman keluarga
+    ├── layouts/                  # Layout per peran
+    ├── notifikasi/               # Halaman notifikasi
+    ├── profil/                   # Pengaturan profil
+    └── pramurukti/               # View halaman pramurukti
 routes/
-└── web.php            # Route utama
+└── web.php                       # Semua route aplikasi
 database/
-├── migrations/        # Struktur tabel
-└── seeders/           # Data awal
+└── migrations/                   # Struktur tabel database
+```
+
+---
+
+## ⚙️ Perintah Berguna
+
+```bash
+# Bersihkan cache
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Lihat semua route
+php artisan route:list
+
+# Reset database
+php artisan migrate:fresh
 ```
 
 ---
