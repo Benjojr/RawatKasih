@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\Keluarga\KunjunganController;
 use App\Http\Controllers\Keluarga\KesehatanController;
 use App\Http\Controllers\Admin\ShiftController;
+use App\Http\Controllers\Admin\KunjunganController as AdminKunjunganController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -84,6 +85,8 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
     Route::delete('admin/shift/jadwal/{shiftPramurukti}', [ShiftController::class, 'destroyJadwal'])->name('admin.shift.destroyJadwal');
     Route::delete('admin/shift/jenis/{shift}', [ShiftController::class, 'destroyShift'])->name('admin.shift.destroyShift');
 
+    Route::get('admin/kunjungan', [AdminKunjunganController::class, 'index'])->name('admin.kunjungan.index');
+    Route::patch('admin/kunjungan/{kunjungan}/status', [AdminKunjunganController::class, 'updateStatus'])->name('admin.kunjungan.updateStatus');
 });
 
 Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {

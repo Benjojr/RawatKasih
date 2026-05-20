@@ -85,11 +85,12 @@
             <p class="font-semibold text-sm">Atur Jadwal Shift</p>
             <p class="text-xs text-green-100 mt-1">Kelola shift pramurukti</p>
         </a>
-        <button class="bg-purple-500 hover:bg-purple-600 text-white rounded-2xl p-5 text-left transition">
-            <div class="text-2xl mb-2">📢</div>
-            <p class="font-semibold text-sm">Kirim Pengumuman</p>
-            <p class="text-xs text-purple-100 mt-1">Broadcast ke semua</p>
-        </button>
+        <a href="{{ route('admin.kunjungan.index') }}"
+            class="bg-purple-500 hover:bg-purple-600 text-white rounded-2xl p-5 text-left transition block">
+            <div class="text-2xl mb-2">📋</div>
+            <p class="font-semibold text-sm">Review Kunjungan</p>
+            <p class="text-xs text-purple-100 mt-1">Kelola pengajuan keluarga</p>
+        </a>
     </div>
 
 @endsection
