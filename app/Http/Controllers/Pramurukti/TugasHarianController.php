@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Pramurukti;
 
+use App\Helpers\NotifikasiHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Pengguna;
 use App\Models\Penghuni;
+use App\Models\TandaVital;
 use App\Models\Tugas;
 use App\Models\TugasHarian;
-use App\Models\TandaVital;
 use Illuminate\Http\Request;
 
 class TugasHarianController extends Controller
@@ -53,6 +55,17 @@ class TugasHarianController extends Controller
                 'tanggal' => today(),
                 'waktu' => $request->waktu_pelaksanaan,
             ]);
+        }
+
+        // Kirim notifikasi ke semua admin
+        $admins = Pengguna::where('peran', 'admin')->get();
+        foreach ($admins as $admin) {
+            NotifikasiHelper::kirim(
+                $admin->id_pengguna,
+                'Tugas Baru Ditambahkan',
+                'Pramurukti menambahkan tugas baru untuk '.($penghuni->nama_lengkap ?? ''),
+                'info'
+            );
         }
 
         return redirect()->route('pramurukti.tugas.index')
