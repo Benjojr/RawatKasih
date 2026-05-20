@@ -14,6 +14,7 @@ use App\Http\Controllers\Keluarga\KesehatanController;
 use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\KunjunganController as AdminKunjunganController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\ChatController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -25,6 +26,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
+    Route::get('/notifikasi/belum-dibaca', [NotifikasiController::class, 'belumDibaca'])->name('notifikasi.belumDibaca');
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{pengguna}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{pengguna}', [ChatController::class, 'store'])->name('chat.store');
 });
 
 // Dashboard
@@ -97,9 +103,4 @@ Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {
     Route::post('keluarga/kunjungan', [KunjunganController::class, 'store'])->name('keluarga.kunjungan.store');
     Route::delete('keluarga/kunjungan/{kunjungan}', [KunjunganController::class, 'destroy'])->name('keluarga.kunjungan.destroy');
     Route::get('keluarga/kesehatan', [KesehatanController::class, 'index'])->name('keluarga.kesehatan.index');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
-    Route::get('/notifikasi/belum-dibaca', [NotifikasiController::class, 'belumDibaca'])->name('notifikasi.belumDibaca');
 });
