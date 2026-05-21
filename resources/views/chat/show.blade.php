@@ -40,7 +40,7 @@
         </div>
 
         {{-- Area Chat --}}
-        <div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+        <div class="flex-1 flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden h-[90vh]">
 
             {{-- Header --}}
             <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
@@ -55,15 +55,15 @@
             </div>
 
             {{-- Pesan --}}
-            <div class="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3" id="areaPesan">
+            <div class="flex-1 overflow-y-auto px-8 py-6 flex flex-col gap-4 bg-gray-50" id="areaPesan">
                 @forelse($pesan as $p)
                     @php $dariku = $p->id_pengirim == Auth::id(); @endphp
                     <div class="flex {{ $dariku ? 'justify-end' : 'justify-start' }}">
-                        <div class="max-w-xs lg:max-w-md">
+                        <div class="max-w-xs lg:max-w-md break-words">
                             <div
                                 class="px-4 py-2 rounded-2xl text-sm
-                        {{ $dariku ? 'bg-green-500 text-white rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm' }}">
-                                {{ $p->pesan }}
+                                {{ $dariku ? 'bg-green-500 text-white rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm' }}">
+                                {!! nl2br(e($p->pesan)) !!}
                             </div>
                             <p class="text-xs text-gray-400 mt-1 {{ $dariku ? 'text-right' : 'text-left' }}">
                                 {{ \Carbon\Carbon::parse($p->created_at)->format('H:i') }}
@@ -93,13 +93,13 @@
             </div>
 
             {{-- Input --}}
-            <div class="px-5 py-4 border-t border-gray-100">
-                <form id="formChat" class="flex gap-3"> {{-- hapus method/action, tambah id --}}
+            <div class="px-6 py-5 border-t border-gray-100 bg-white">
+                <form id="formChat" class="flex gap-3 items-end">
                     @csrf
-                    <input type="text" name="pesan" id="inputPesan" required placeholder="Ketik pesan..."
-                        class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                    <textarea name="pesan" id="inputPesan" required placeholder="Ketik pesan..." rows="1"
+                        class="flex-1 border border-gray-200 rounded-2xl px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 resize-none overflow-hidden leading-5"></textarea>
                     <button type="submit"
-                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition">
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-xl transition flex-shrink-0">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -113,6 +113,7 @@
     <script>
         const areaPesan = document.getElementById('areaPesan');
         const typingIndicator = document.getElementById('typingIndicator');
+        const inputPesan = document.getElementById('inputPesan');
         const idLawan = {{ $pengguna->id_pengguna }};
         const sayaId = {{ Auth::id() }};
         let lastId = {{ $pesan->last()?->id_chat ?? 0 }};
@@ -121,11 +122,10 @@
         // Scroll ke bawah saat pertama load
         areaPesan.scrollTop = areaPesan.scrollHeight;
 
-        // Submit via fetch — tidak reload halaman
+        // Submit via fetch
         document.getElementById('formChat').addEventListener('submit', function(e) {
             e.preventDefault();
-            const input = document.getElementById('inputPesan');
-            const pesan = input.value.trim();
+            const pesan = inputPesan.value.trim();
             if (!pesan) return;
 
             tampilkanPesan({
@@ -134,7 +134,9 @@
                 waktu: waktuSekarang(),
                 dibaca: false,
             });
-            input.value = '';
+
+            inputPesan.value = '';
+            inputPesan.style.height = 'auto';
 
             fetch('{{ route('chat.store', $pengguna->id_pengguna) }}', {
                     method: 'POST',
@@ -153,8 +155,13 @@
                 });
         });
 
-        // Sinyal typing ke server
-        document.getElementById('inputPesan').addEventListener('input', function() {
+        // Auto-resize + sinyal typing (digabung jadi satu listener)
+        inputPesan.addEventListener('input', function() {
+            // Auto-resize
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+
+            // Typing signal
             clearTimeout(typingTimeout);
             fetch(`/chat/${idLawan}/typing`, {
                 method: 'POST',
@@ -167,13 +174,19 @@
             typingTimeout = setTimeout(() => {}, 2000);
         });
 
+        // Enter kirim, Shift+Enter baris baru
+        inputPesan.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('formChat').dispatchEvent(new Event('submit'));
+            }
+        });
+
         if (window._intervalPesan) clearInterval(window._intervalPesan);
         if (window._intervalTyping) clearInterval(window._intervalTyping);
 
         window._intervalPesan = setInterval(ambilPesanBaru, 1000);
         window._intervalTyping = setInterval(cekTyping, 1000);
-
-
 
         function ambilPesanBaru() {
             fetch(`/chat/${idLawan}/pesan-baru?last_id=${lastId}`, {
@@ -185,7 +198,6 @@
                 .then(data => {
                     if (data.pesan && data.pesan.length > 0) {
                         data.pesan.forEach(p => {
-                            // Hanya update lastId kalau lebih besar dari yang sekarang
                             if (p.id_chat > lastId) lastId = p.id_chat;
                             if (p.id_pengirim != sayaId) {
                                 tampilkanPesan(p);
@@ -220,12 +232,11 @@
             const warnaBubble = dariku ?
                 'bg-green-500 text-white rounded-br-sm' :
                 'bg-gray-100 text-gray-800 rounded-bl-sm';
-
             const alignWaktu = dariku ? 'text-right' : 'text-left';
             const centang = dariku ? '• ✓' : '';
 
             div.innerHTML =
-                '<div class="max-w-xs lg:max-w-md">' +
+                '<div class="max-w-xs lg:max-w-md break-words">' +
                 '<div class="px-4 py-2 rounded-2xl text-sm ' + warnaBubble + '">' +
                 p.pesan +
                 '</div>' +
@@ -248,7 +259,8 @@
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
+                .replace(/"/g, '&quot;')
+                .replace(/\n/g, '<br>');
         }
     </script>
 
