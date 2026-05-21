@@ -7,11 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Chat extends Model
 {
     protected $table = 'chat';
+
     protected $primaryKey = 'id_chat';
+
     public $timestamps = false;
 
     protected $fillable = [
         'id_pengirim', 'id_penerima', 'pesan', 'dibaca',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'dibaca' => 'boolean',
     ];
 
     public function pengirim()

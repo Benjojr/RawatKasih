@@ -117,3 +117,7 @@ Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {
     Route::delete('keluarga/kunjungan/{kunjungan}', [KunjunganController::class, 'destroy'])->name('keluarga.kunjungan.destroy');
     Route::get('keluarga/kesehatan', [KesehatanController::class, 'index'])->name('keluarga.kesehatan.index');
 });
+
+Route::post('/chat/{pengguna}/typing', [ChatController::class, 'typing'])->name('chat.typing');
+Route::get('/chat/{pengguna}/cek-typing', [ChatController::class, 'cekTyping'])->name('chat.cekTyping');
+Route::get('/chat/{pengguna}/pesan-baru', [ChatController::class, 'pesanBaru'])->name('chat.pesanBaru');
