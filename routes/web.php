@@ -1,20 +1,33 @@
 <?php
 
 use App\Http\Controllers\Admin\KamarController;
+use App\Http\Controllers\Admin\KunjunganController as AdminKunjunganController;
 use App\Http\Controllers\Admin\PenghuniController;
 use App\Http\Controllers\Admin\PramuruktiController;
+use App\Http\Controllers\Admin\ShiftController;
+use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Keluarga\KesehatanController;
+use App\Http\Controllers\Keluarga\KunjunganController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Pramurukti\PasienController;
 use App\Http\Controllers\Pramurukti\TugasHarianController;
 use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\Admin\TugasController;
-use App\Http\Controllers\Keluarga\KunjunganController;
-use App\Http\Controllers\Keluarga\KesehatanController;
-use App\Http\Controllers\Admin\ShiftController;
-use App\Http\Controllers\Admin\KunjunganController as AdminKunjunganController;
-use App\Http\Controllers\NotifikasiController;
-use App\Http\Controllers\ChatController;
+
+// Welcome
+Route::get('/', function () {
+    if (Auth::check()) {
+        return match (Auth::user()->peran) {
+            'admin' => redirect()->route('dashboard.admin'),
+            'pramurukti' => redirect()->route('dashboard.pramurukti'),
+            'keluarga' => redirect()->route('dashboard.keluarga'),
+        };
+    }
+
+    return view('welcome');
+})->name('home');
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

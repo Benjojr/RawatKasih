@@ -15,12 +15,7 @@
         <div>
             {{-- Logo --}}
             <div class="flex items-center gap-3 mb-10">
-                <div class="bg-green-500 text-white p-2 rounded-xl">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                </div>
+                <img src="{{ asset('icon.png') }}" alt="RawatKasih" class="w-10 h-10 rounded-xl object-cover">
                 <div>
                     <p class="font-semibold text-sm text-gray-800">Panti Sejahtera</p>
                     <p class="text-xs text-gray-400">Portal Pramurukti</p>
