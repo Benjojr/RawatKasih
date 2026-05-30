@@ -15,33 +15,6 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            {{-- Pilihan Peran --}}
-            <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-2">Daftar sebagai</label>
-
-                <div class="flex gap-2">
-                    @foreach (['pramurukti' => 'Pramurukti', 'keluarga' => 'Keluarga', 'admin' => 'Admin'] as $value => $label)
-                        <label class="flex-1 cursor-pointer">
-                            <input type="radio" name="peran" value="{{ $value }}" class="peer hidden"
-                                {{ old('peran') === $value ? 'checked' : '' }}>
-
-                            <div
-                                class="text-center border border-gray-300 rounded-lg py-2 text-sm
-                    text-gray-600 transition
-                    peer-checked:bg-green-500
-                    peer-checked:text-white
-                    peer-checked:border-green-500">
-                                {{ $label }}
-                            </div>
-                        </label>
-                    @endforeach
-                </div>
-
-                @error('peran')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
             <div class="mb-4">
                 <label class="block text-sm text-gray-600 mb-1">Nama Lengkap</label>
                 <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
@@ -58,6 +31,12 @@
                 @error('email')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1">No. Telpon</label>
+                <input type="text" name="no_telpon" value="{{ old('no_telpon') }}"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
             </div>
 
             <div class="mb-4">

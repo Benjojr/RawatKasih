@@ -49,7 +49,6 @@ class AuthController extends Controller
             'nama_lengkap' => 'required|string|max:100',
             'email' => 'required|email|unique:pengguna,email',
             'password' => 'required|min:8|confirmed',
-            'peran' => 'required|in:admin,pramurukti,keluarga',
             'no_telpon' => 'nullable|string|max:20',
         ]);
 
@@ -57,7 +56,7 @@ class AuthController extends Controller
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'peran' => $request->peran,
+            'peran' => 'keluarga', // Default peran untuk pendaftaran umum
             'no_telpon' => $request->no_telpon,
         ]);
 
