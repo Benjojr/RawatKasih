@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\KamarController;
 use App\Http\Controllers\Admin\KunjunganController as AdminKunjunganController;
+use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\PenghuniController;
 use App\Http\Controllers\Admin\PramuruktiController;
 use App\Http\Controllers\Admin\ShiftController;
@@ -107,6 +108,11 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
 
     Route::get('admin/kunjungan', [AdminKunjunganController::class, 'index'])->name('admin.kunjungan.index');
     Route::patch('admin/kunjungan/{kunjungan}/status', [AdminKunjunganController::class, 'updateStatus'])->name('admin.kunjungan.updateStatus');
+    
+    Route::get('admin/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+    Route::patch('admin/pengguna/{pengguna}/peran', [PenggunaController::class, 'updatePeran'])->name('admin.pengguna.updatePeran');
+    Route::delete('admin/pengguna/{pengguna}', [PenggunaController::class, 'destroy'])->name('admin.pengguna.destroy');
+    Route::patch('admin/pengguna/{pengguna}/blacklist', [PenggunaController::class, 'blacklist'])->name('admin.pengguna.blacklist');
 });
 
 Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {

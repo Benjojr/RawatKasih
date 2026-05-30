@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Pengguna;
 
 class AuthController extends Controller
 {
@@ -21,9 +21,15 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $kredensial = $request->only('email', 'password');
+        // Cek blacklist sebelum login
+        $pengguna = Pengguna::where('email', $request->email)->first();
+        if ($pengguna && $pengguna->blacklist) {
+            return back()->withErrors([
+                'email' => 'Akun ini telah diblacklist. Hubungi admin.',
+            ]);
+        }
 
-        if (Auth::attempt($kredensial)) {
+        if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
 
             return match (Auth::user()->peran) {
