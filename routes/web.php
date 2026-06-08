@@ -51,13 +51,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'cek.peran:pramurukti'])->group(function () {
     Route::get('/dashboard/pramurukti', [DashboardController::class, 'pramurukti'])->name('dashboard.pramurukti');
 
-    Route::resource('pramurukti/tugas', TugasHarianController::class)
-        ->only(['index', 'store', 'destroy'])
-        ->names([
-            'index' => 'pramurukti.tugas.index',
-            'store' => 'pramurukti.tugas.store',
-            'destroy' => 'pramurukti.tugas.destroy',
-        ]);
+    Route::get('pramurukti/tugas', [TugasHarianController::class, 'index'])->name('pramurukti.tugas.index');
+    Route::post('pramurukti/tugas', [TugasHarianController::class, 'store'])->name('pramurukti.tugas.store');
+    Route::delete('pramurukti/tugas/{tugasHarian}', [TugasHarianController::class, 'destroy'])->name('pramurukti.tugas.destroy');
 
     Route::patch('pramurukti/tugas/{tugasHarian}/status', [TugasHarianController::class, 'updateStatus'])
         ->name('pramurukti.tugas.updateStatus');
@@ -91,14 +87,6 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
             'store' => 'admin.pramurukti.store',
             'destroy' => 'admin.pramurukti.destroy',
         ]);
-    Route::resource('admin/tugas', TugasController::class)
-        ->only(['index', 'store', 'update', 'destroy'])
-        ->names([
-            'index' => 'admin.tugas.index',
-            'store' => 'admin.tugas.store',
-            'update' => 'admin.tugas.update',
-            'destroy' => 'admin.tugas.destroy',
-        ]);
 
     Route::get('admin/shift', [ShiftController::class, 'index'])->name('admin.shift.index');
     Route::post('admin/shift/jenis', [ShiftController::class, 'storeShift'])->name('admin.shift.storeShift');
@@ -108,11 +96,20 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
 
     Route::get('admin/kunjungan', [AdminKunjunganController::class, 'index'])->name('admin.kunjungan.index');
     Route::patch('admin/kunjungan/{kunjungan}/status', [AdminKunjunganController::class, 'updateStatus'])->name('admin.kunjungan.updateStatus');
-    
+
     Route::get('admin/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
     Route::patch('admin/pengguna/{pengguna}/peran', [PenggunaController::class, 'updatePeran'])->name('admin.pengguna.updatePeran');
     Route::delete('admin/pengguna/{pengguna}', [PenggunaController::class, 'destroy'])->name('admin.pengguna.destroy');
     Route::patch('admin/pengguna/{pengguna}/blacklist', [PenggunaController::class, 'blacklist'])->name('admin.pengguna.blacklist');
+
+    Route::post('admin/penghuni/{penghuni}/keluarga', [PenghuniController::class, 'assignKeluarga'])->name('admin.penghuni.assignKeluarga');
+    Route::delete('admin/penghuni/{penghuni}/keluarga/{keluarga}', [PenghuniController::class, 'removeKeluarga'])->name('admin.penghuni.removeKeluarga');
+    Route::get('admin/penghuni/{penghuni}', [PenghuniController::class, 'show'])->name('admin.penghuni.show');
+
+    Route::get('admin/tugas', [TugasController::class, 'index'])->name('admin.tugas.index');
+    Route::post('admin/tugas', [TugasController::class, 'store'])->name('admin.tugas.store');
+    Route::put('admin/tugas/{tugas}', [TugasController::class, 'update'])->name('admin.tugas.update');
+    Route::delete('admin/tugas/{tugas}', [TugasController::class, 'destroy'])->name('admin.tugas.destroy');
 });
 
 Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {

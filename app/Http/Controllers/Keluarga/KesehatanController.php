@@ -17,9 +17,29 @@ class KesehatanController extends Controller
         $pengguna = Auth::user();
         $keluarga = Keluarga::where('id_pengguna', $pengguna->id_pengguna)->first();
 
-        $periode = $request->get('periode', '7');
-        $penghuni = Penghuni::all();
+        if (! $keluarga) {
+            return view('keluarga.kesehatan.index', [
+                'tandaVital' => collect(),
+                'labelGrafik' => collect(),
+                'gulaData' => collect(),
+                'detakData' => collect(),
+                'suhuData' => collect(),
+                'periode' => '7',
+                'penghuni' => collect(),
+                'idPenghuni' => null,
+                'vitalTerakhir' => null,
+            ]);
+        }
+
+        // Hanya penghuni yang terhubung
+        $penghuni = $keluarga->penghuni;
         $idPenghuni = $request->get('id_penghuni', $penghuni->first()?->id_penghuni);
+        $periode = $request->get('periode', '7');
+
+        // Pastikan penghuni yang dipilih memang terhubung
+        if (! $penghuni->contains('id_penghuni', $idPenghuni)) {
+            $idPenghuni = $penghuni->first()?->id_penghuni;
+        }
 
         $tandaVital = TandaVital::where('id_penghuni', $idPenghuni)
             ->where('tanggal', '>=', now()->subDays($periode)->toDateString())

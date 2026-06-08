@@ -23,7 +23,8 @@ class KunjunganController extends Controller
                 ->get()
             : collect();
 
-        $penghuni = Penghuni::all();
+        // Hanya penghuni yang terhubung
+        $penghuni = $keluarga ? $keluarga->penghuni : collect();
 
         return view('keluarga.kunjungan.index', compact('kunjungan', 'penghuni', 'keluarga'));
     }
@@ -34,7 +35,7 @@ class KunjunganController extends Controller
         $keluarga = Keluarga::where('id_pengguna', $pengguna->id_pengguna)->first();
 
         if (! $keluarga) {
-            return back()->with('error', 'Akun keluarga belum terdaftar. Hubungi admin.');
+            return back()->with('error', 'Akun keluarga belum terdaftar.');
         }
 
         $request->validate([
@@ -44,6 +45,15 @@ class KunjunganController extends Controller
             'catatan' => 'nullable|string|max:300',
         ]);
 
+        // Pastikan penghuni memang terhubung dengan keluarga ini
+        $terhubung = $keluarga->penghuni()
+            ->where('penghuni.id_penghuni', $request->id_penghuni)
+            ->exists();
+
+        if (! $terhubung) {
+            return back()->with('error', 'Penghuni tidak terhubung dengan akun ini.');
+        }
+
         Kunjungan::create([
             'id_keluarga' => $keluarga->id_keluarga,
             'id_penghuni' => $request->id_penghuni,
@@ -52,17 +62,6 @@ class KunjunganController extends Controller
             'status_kunjungan' => 'mendatang',
             'catatan' => $request->catatan,
         ]);
-
-        // Kirim notifikasi ke admin
-        $admins = Pengguna::where('peran', 'admin')->get();
-        foreach ($admins as $admin) {
-            NotifikasiHelper::kirim(
-                $admin->id_pengguna,
-                'Pengajuan Kunjungan Baru',
-                Auth::user()->nama_lengkap.' mengajukan kunjungan pada '.$request->tanggal_kunjungan,
-                'info'
-            );
-        }
 
         return redirect()->route('keluarga.kunjungan.index')
             ->with('success', 'Jadwal kunjungan berhasil diajukan.');

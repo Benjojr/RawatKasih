@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Keluarga;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,10 @@ class AuthController extends Controller
             'peran' => 'keluarga', // Default peran untuk pendaftaran umum
             'no_telpon' => $request->no_telpon,
         ]);
+
+        if ($pengguna->peran === 'keluarga') {
+            Keluarga::create(['id_pengguna' => $pengguna->id_pengguna]);
+        }
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat, silakan login.');
     }

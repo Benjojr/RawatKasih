@@ -40,6 +40,8 @@
                         <td class="px-5 py-4 text-gray-500">{{ $p->golongan_darah ?? '-' }}</td>
                         <td class="px-5 py-4 text-gray-500">{{ $p->kamar->nomor_kamar ?? '-' }}</td>
                         <td class="px-5 py-4 flex gap-2">
+                            <a href="{{ route('admin.penghuni.show', $p->id_penghuni) }}"
+                                class="text-xs text-green-500 hover:underline">Detail</a>
                             <button onclick="openEdit({{ $p }})"
                                 class="text-xs text-blue-500 hover:underline">Edit</button>
                             <form method="POST" action="{{ route('admin.penghuni.destroy', $p->id_penghuni) }}"

@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Penghuni extends Model
 {
     protected $table = 'penghuni';
-
     protected $primaryKey = 'id_penghuni';
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -31,5 +29,15 @@ class Penghuni extends Model
     public function tandaVital()
     {
         return $this->hasMany(TandaVital::class, 'id_penghuni', 'id_penghuni');
+    }
+
+    public function keluarga()
+    {
+        return $this->belongsToMany(
+            Keluarga::class,
+            'keluarga_penghuni',
+            'id_penghuni',
+            'id_keluarga'
+        )->withPivot('hubungan');
     }
 }

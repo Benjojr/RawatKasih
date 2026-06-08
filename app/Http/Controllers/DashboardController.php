@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Keluarga;
 use App\Models\Penghuni;
 use App\Models\Pramurukti;
 use App\Models\TugasHarian;
-use App\Models\Keluarga;
-use App\Models\Kunjungan;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -49,12 +48,14 @@ class DashboardController extends Controller
     public function keluarga()
     {
         $pengguna = Auth::user();
-
         $keluarga = Keluarga::where('id_pengguna', $pengguna->id_pengguna)->first();
 
-        return view('dashboard.keluarga', compact(
-            'pengguna',
-            'keluarga',
-        ));
+        $daftarPenghuni = $keluarga
+            ? $keluarga->penghuni()->with(['kamar', 'tandaVital' => function ($q) {
+                $q->orderByDesc('tanggal')->orderByDesc('waktu')->limit(1);
+            }])->get()
+            : collect();
+
+        return view('dashboard.keluarga', compact('pengguna', 'keluarga', 'daftarPenghuni'));
     }
 }

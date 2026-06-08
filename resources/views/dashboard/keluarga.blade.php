@@ -100,4 +100,57 @@
         </button>
     </div>
 
+    {{-- Daftar Penghuni --}}
+    @forelse($daftarPenghuni as $p)
+        <div class="bg-white rounded-2xl p-6 shadow-sm mb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xl font-bold">
+                        {{ strtoupper(substr($p->nama_lengkap, 0, 1)) }}
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-800">{{ $p->nama_lengkap }}</p>
+                        <p class="text-sm text-gray-400">
+                            {{ $p->tanggal_lahir ? \Carbon\Carbon::parse($p->tanggal_lahir)->age . ' tahun' : '-' }}
+                            @if ($p->kamar)
+                                • Kamar {{ $p->kamar->nomor_kamar }}
+                            @endif
+                        </p>
+                    </div>
+                </div>
+                <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-600">Stabil</span>
+            </div>
+
+            {{-- Vital Terakhir --}}
+            @php $vital = $p->tandaVital->first(); @endphp
+            <div class="grid grid-cols-4 gap-3">
+                <div class="bg-gray-50 rounded-xl p-3 text-center">
+                    <p class="text-xs text-gray-400">Tekanan Darah</p>
+                    <p class="font-bold text-gray-800 mt-1">{{ $vital?->tekanan_darah ?? '-' }}</p>
+                    <p class="text-xs text-gray-400">mmHg</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-3 text-center">
+                    <p class="text-xs text-gray-400">Gula Darah</p>
+                    <p class="font-bold text-gray-800 mt-1">{{ $vital?->gula_darah ?? '-' }}</p>
+                    <p class="text-xs text-gray-400">mg/dL</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-3 text-center">
+                    <p class="text-xs text-gray-400">Detak Jantung</p>
+                    <p class="font-bold text-gray-800 mt-1">{{ $vital?->detak_jantung ?? '-' }}</p>
+                    <p class="text-xs text-gray-400">bpm</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-3 text-center">
+                    <p class="text-xs text-gray-400">Suhu</p>
+                    <p class="font-bold text-gray-800 mt-1">{{ $vital?->suhu ?? '-' }}</p>
+                    <p class="text-xs text-gray-400">°C</p>
+                </div>
+            </div>
+        </div>
+    @empty
+        <div class="bg-white rounded-2xl p-6 shadow-sm text-center text-gray-400">
+            Belum ada penghuni yang terhubung. Hubungi admin panti.
+        </div>
+    @endforelse
+
 @endsection
