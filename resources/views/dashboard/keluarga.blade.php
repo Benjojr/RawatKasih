@@ -36,21 +36,27 @@
 
     {{-- Kartu Status Lansia --}}
     <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
-        @if ($keluarga)
-            <p class="text-xs text-gray-400 mb-3">Status Lansia</p>
-            <div class="flex items-center gap-4">
-                <div
-                    class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xl font-bold">
-                    ?
-                </div>
-                <div class="flex-1">
-                    <p class="font-semibold text-gray-800">Data penghuni belum terhubung</p>
-                    <p class="text-sm text-gray-400">Hubungi admin untuk menghubungkan data</p>
-                </div>
-                <span class="text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full">Tidak diketahui</span>
-            </div>
+        @if ($daftarPenghuni->isEmpty())
+            <p class="text-sm text-gray-400">Belum ada penghuni yang terhubung. Hubungi admin panti.</p>
         @else
-            <p class="text-sm text-gray-400">Akun keluarga belum terdaftar. Hubungi admin panti.</p>
+            @foreach ($daftarPenghuni as $p)
+                <div class="flex items-center gap-4 mb-3 last:mb-0">
+                    <div
+                        class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">
+                        {{ strtoupper(substr($p->nama_lengkap, 0, 1)) }}
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-800">{{ $p->nama_lengkap }}</p>
+                        <p class="text-sm text-gray-400">
+                            {{ $p->tanggal_lahir ? \Carbon\Carbon::parse($p->tanggal_lahir)->age . ' tahun' : '-' }}
+                            @if ($p->kamar)
+                                • Kamar {{ $p->kamar->nomor_kamar }}
+                            @endif
+                        </p>
+                    </div>
+                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Stabil</span>
+                </div>
+            @endforeach
         @endif
     </div>
 
