@@ -41,13 +41,16 @@
                         <td class="px-5 py-4 text-gray-500">{{ $p->kamar->nomor_kamar ?? '-' }}</td>
                         <td class="px-5 py-4 flex gap-2">
                             <a href="{{ route('admin.penghuni.show', $p->id_penghuni) }}"
-                                class="text-xs text-green-500 hover:underline">Detail</a>
+                                class="text-sm px-4 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600 font-medium transition">Detail</a>
+
                             <button onclick="openEdit({{ $p }})"
-                                class="text-xs text-blue-500 hover:underline">Edit</button>
+                                class="text-sm px-4 py-2 rounded-xl bg-blue-500 text-white hover:bg-blue-600 font-medium transition">Edit</button>
+
                             <form method="POST" action="{{ route('admin.penghuni.destroy', $p->id_penghuni) }}"
                                 onsubmit="return confirm('Hapus penghuni ini?')">
                                 @csrf @method('DELETE')
-                                <button class="text-xs text-red-500 hover:underline">Hapus</button>
+                                <button type="submit"
+                                    class="text-sm px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 font-medium transition">Hapus</button>
                             </form>
                         </td>
                     </tr>

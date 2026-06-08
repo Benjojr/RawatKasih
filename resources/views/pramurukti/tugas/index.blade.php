@@ -32,48 +32,110 @@
         </div>
     </div>
 
-    {{-- Daftar Tugas --}}
-    <div class="flex flex-col gap-3">
-        @forelse($tugasHarian as $t)
-            <div class="bg-white rounded-2xl px-5 py-4 shadow-sm flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <span
-                        class="w-3 h-3 rounded-full flex-shrink-0
-                {{ $t->status_tugas === 'tuntas'
-                    ? 'bg-green-400'
-                    : ($t->status_tugas === 'in progress'
-                        ? 'bg-blue-400'
-                        : 'bg-yellow-400') }}">
+    {{-- Daftar Tugas (grouped by sesi) --}}
+    @php
+        function sesiWaktu($waktu)
+        {
+            $jam = (int) \Carbon\Carbon::parse($waktu)->format('H');
+            if ($jam >= 5 && $jam < 11) {
+                return 'Pagi';
+            }
+            if ($jam >= 11 && $jam < 15) {
+                return 'Siang';
+            }
+            if ($jam >= 15 && $jam < 19) {
+                return 'Sore';
+            }
+            return 'Malam';
+        }
+
+        $grouped = $tugasHarian->groupBy(fn($t) => sesiWaktu($t->waktu_pelaksanaan));
+        $urutan = ['Pagi', 'Siang', 'Sore', 'Malam'];
+        $sesiIcon = [
+            'Pagi' => ['range' => '05:00–11:00'],
+            'Siang' => ['range' => '11:00–15:00'],
+            'Sore' => ['range' => '15:00–19:00'],
+            'Malam' => ['range' => '19:00–05:00'],
+        ];
+    @endphp
+
+    <div class="flex flex-col gap-1">
+        @forelse($urutan as $sesi)
+            @if ($grouped->has($sesi))
+                {{-- Header Sesi --}}
+                <div class="flex items-center gap-3 mt-5 mb-2">
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        {{ $sesi }} · {{ $sesiIcon[$sesi]['range'] }}
                     </span>
-                    <div>
-                        <p
-                            class="text-sm font-medium text-gray-700
-                    {{ $t->status_tugas === 'tuntas' ? 'line-through text-gray-400' : '' }}">
-                            {{ $t->tugas->judul_tugas ?? '-' }} — {{ $t->penghuni->nama_lengkap ?? '-' }}
-                        </p>
-                        <p class="text-xs text-gray-400 mt-1">{{ $t->waktu_pelaksanaan }}</p>
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                </div>
+
+                {{-- Tugas dalam sesi ini --}}
+                @foreach ($grouped[$sesi] as $t)
+                    @php
+                        $dotColor = match ($t->status_tugas) {
+                            'tuntas' => 'bg-green-500',
+                            'in progress' => 'bg-blue-500',
+                            default => 'bg-yellow-400',
+                        };
+                        $badgeCls = match ($t->status_tugas) {
+                            'tuntas' => 'bg-green-100 text-green-700',
+                            'in progress' => 'bg-blue-100 text-blue-700',
+                            default => 'bg-yellow-100 text-yellow-700',
+                        };
+                        $badgeLabel = match ($t->status_tugas) {
+                            'tuntas' => 'Tuntas',
+                            'in progress' => 'In Progress',
+                            default => 'Mendatang',
+                        };
+                    @endphp
+                    <div class="bg-white rounded-2xl px-5 py-4 shadow-sm flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0 {{ $dotColor }}"></span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">
+                                    {{ $t->tugas->judul_tugas ?? '-' }} — {{ $t->penghuni->nama_lengkap ?? '-' }}
+                                </p>
+                                <p class="text-xs text-gray-400 mt-0.5">
+                                    {{ \Carbon\Carbon::parse($t->waktu_pelaksanaan)->format('H:i') }}
+                                    · {{ ucfirst($t->tugas->tipe_tugas ?? '') }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            {{-- Badge status --}}
+                            <span class="text-xs font-medium px-3 py-1 rounded-full {{ $badgeCls }}">
+                                {{ $badgeLabel }}
+                            </span>
+
+                            {{-- Dropdown update status --}}
+                            <form method="POST"
+                                action="{{ route('pramurukti.tugas.updateStatus', $t->id_tugas_harian) }}">
+                                @csrf @method('PATCH')
+                                <select name="status_tugas" onchange="this.form.submit()"
+                                    class="text-xs border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-green-400 bg-white">
+                                    <option value="mendatang" {{ $t->status_tugas === 'mendatang' ? 'selected' : '' }}>
+                                        Mendatang</option>
+                                    <option value="in progress" {{ $t->status_tugas === 'in progress' ? 'selected' : '' }}>
+                                        In Progress</option>
+                                    <option value="tuntas" {{ $t->status_tugas === 'tuntas' ? 'selected' : '' }}>
+                                        Tuntas</option>
+                                </select>
+                            </form>
+
+                            {{-- Tombol hapus --}}
+                            <form method="POST" action="{{ route('pramurukti.tugas.destroy', $t->id_tugas_harian) }}"
+                                onsubmit="return confirm('Hapus tugas ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit"
+                                    class="text-sm font-medium bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-xl transition">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <form method="POST" action="{{ route('pramurukti.tugas.updateStatus', $t->id_tugas_harian) }}">
-                        @csrf @method('PATCH')
-                        <select name="status_tugas" onchange="this.form.submit()"
-                            class="text-xs border border-gray-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-green-400">
-                            <option value="mendatang" {{ $t->status_tugas === 'mendatang' ? 'selected' : '' }}>Mendatang
-                            </option>
-                            <option value="in progress" {{ $t->status_tugas === 'in progress' ? 'selected' : '' }}>In
-                                Progress</option>
-                            <option value="tuntas" {{ $t->status_tugas === 'tuntas' ? 'selected' : '' }}>Tuntas
-                            </option>
-                        </select>
-                    </form>
-                    <form method="POST" action="{{ route('pramurukti.tugas.destroy', $t->id_tugas_harian) }}"
-                        onsubmit="return confirm('Hapus tugas ini?')">
-                        @csrf @method('DELETE')
-                        <button class="text-xs text-red-500 hover:underline">Hapus</button>
-                    </form>
-                </div>
-            </div>
+                @endforeach
+            @endif
         @empty
             <div class="bg-white rounded-2xl px-5 py-6 shadow-sm text-center text-gray-400">
                 Belum ada tugas hari ini.

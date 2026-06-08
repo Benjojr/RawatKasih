@@ -130,7 +130,7 @@
 
             tampilkanPesan({
                 id_pengirim: sayaId,
-                pesan: escapeHtml(pesan),
+                pesan: pesan, // ← kirim pesan mentah, biarkan tampilkanPesan yang handle
                 waktu: waktuSekarang(),
                 dibaca: false,
             });
@@ -235,10 +235,13 @@
             const alignWaktu = dariku ? 'text-right' : 'text-left';
             const centang = dariku ? '• ✓' : '';
 
+            // Escape dulu, baru tampilkan
+            const pesanHtml = escapeHtml(p.pesan); // ← tambahkan ini
+
             div.innerHTML =
                 '<div class="max-w-xs lg:max-w-md break-words">' +
                 '<div class="px-4 py-2 rounded-2xl text-sm ' + warnaBubble + '">' +
-                p.pesan +
+                pesanHtml + // ← pakai pesanHtml, bukan p.pesan
                 '</div>' +
                 '<p class="text-xs text-gray-400 mt-1 ' + alignWaktu + '">' +
                 p.waktu + ' ' + centang +

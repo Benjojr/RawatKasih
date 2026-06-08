@@ -65,7 +65,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold text-gray-700">Keluarga Terhubung</h2>
                 <button onclick="document.getElementById('modalAssign').classList.remove('hidden')"
-                    class="text-xs bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg transition">
+                    class="text-sm bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl font-medium transition">
                     + Hubungkan
                 </button>
             </div>
@@ -88,7 +88,8 @@
                         action="{{ route('admin.penghuni.removeKeluarga', [$penghuni->id_penghuni, $k->id_keluarga]) }}"
                         onsubmit="return confirm('Lepas hubungan ini?')">
                         @csrf @method('DELETE')
-                        <button class="text-xs text-red-500 hover:underline">Lepas</button>
+                        <button type="submit"
+                            class="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl font-medium transition">Lepas</button>
                     </form>
                 </div>
             @empty
