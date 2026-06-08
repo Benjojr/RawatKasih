@@ -132,14 +132,16 @@ class ChatController extends Controller
         $saya = Auth::user();
         $lastId = $request->query('last_id', 0);
 
-        $pesan = Chat::where(function ($q) use ($saya, $pengguna) {
-            $q->where('id_pengirim', $saya->id_pengguna)
-                ->where('id_penerima', $pengguna->id_pengguna);
-        })
+        $pesan = Chat::where(function ($query) use ($saya, $pengguna) {
+            $query->where(function ($q) use ($saya, $pengguna) {
+                $q->where('id_pengirim', $saya->id_pengguna)
+                    ->where('id_penerima', $pengguna->id_pengguna);
+            })
             ->orWhere(function ($q) use ($saya, $pengguna) {
                 $q->where('id_pengirim', $pengguna->id_pengguna)
                     ->where('id_penerima', $saya->id_pengguna);
-            })
+            });
+        })
             ->where('id_chat', '>', $lastId)
             ->orderBy('created_at')
             ->get()

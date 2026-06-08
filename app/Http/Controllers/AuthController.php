@@ -59,7 +59,7 @@ class AuthController extends Controller
             'no_telpon' => 'nullable|string|max:20',
         ]);
 
-        Pengguna::create([
+        $pengguna = Pengguna::create([
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'password' => Hash::make($request->password),

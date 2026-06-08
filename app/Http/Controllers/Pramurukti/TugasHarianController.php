@@ -58,6 +58,7 @@ class TugasHarianController extends Controller
         }
 
         // Kirim notifikasi ke semua admin
+        $penghuni = Penghuni::find($request->id_penghuni);
         $admins = Pengguna::where('peran', 'admin')->get();
         foreach ($admins as $admin) {
             NotifikasiHelper::kirim(
