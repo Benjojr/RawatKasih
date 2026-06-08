@@ -69,6 +69,13 @@ class KunjunganController extends Controller
 
     public function destroy(Kunjungan $kunjungan)
     {
+        $pengguna = Auth::user();
+        $keluarga = Keluarga::where('id_pengguna', $pengguna->id_pengguna)->first();
+
+        if (!$keluarga || $kunjungan->id_keluarga !== $keluarga->id_keluarga) {
+            return back()->with('error', 'Tidak memiliki izin untuk membatalkan kunjungan ini.');
+        }
+
         $kunjungan->delete();
 
         return redirect()->route('keluarga.kunjungan.index')
