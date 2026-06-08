@@ -16,6 +16,7 @@ use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Pramurukti\PasienController;
 use App\Http\Controllers\Pramurukti\TugasHarianController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\Admin\RutinitasController;
 
 // Welcome
 Route::get('/', function () {
@@ -110,6 +111,12 @@ Route::middleware(['auth', 'cek.peran:admin'])->group(function () {
     Route::post('admin/tugas', [TugasController::class, 'store'])->name('admin.tugas.store');
     Route::put('admin/tugas/{tugas}', [TugasController::class, 'update'])->name('admin.tugas.update');
     Route::delete('admin/tugas/{tugas}', [TugasController::class, 'destroy'])->name('admin.tugas.destroy');
+
+    Route::get('admin/rutinitas', [RutinitasController::class, 'index'])->name('admin.rutinitas.index');
+    Route::post('admin/rutinitas', [RutinitasController::class, 'store'])->name('admin.rutinitas.store');
+    Route::patch('admin/rutinitas/{rutinitas}/toggle', [RutinitasController::class, 'toggle'])->name('admin.rutinitas.toggle');
+    Route::delete('admin/rutinitas/{rutinitas}', [RutinitasController::class, 'destroy'])->name('admin.rutinitas.destroy');
+    Route::post('admin/rutinitas/generate', [RutinitasController::class, 'generate'])->name('admin.rutinitas.generate');
 });
 
 Route::middleware(['auth', 'cek.peran:keluarga'])->group(function () {
